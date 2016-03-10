@@ -1,2 +1,2 @@
-# xjwun.github.com
-git pages
+# http://xjwun.github.com
+Liu xiaomao's blog
