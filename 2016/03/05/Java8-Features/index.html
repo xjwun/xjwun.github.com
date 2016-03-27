@@ -6,21 +6,21 @@
   <title>Java8 Features | Liu Xiaomao&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Reading Note for Introducing Java 8
-Lambada Expressionsbehaviour parameterization patternFlexibility and conciseness(parameters) -&amp;gt; expression(parameters) -&amp;gt; {statements;}
-Method Referencesreuse">
+Java 8 Features1. Lambada ExpressionsWhy Lambda?Pattern : behaviour parameterization, cope with requirement changes with flexibility and conciseness
+Definition and">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java8 Features">
 <meta property="og:url" content="http://xjwun.github.io/2016/03/05/Java8-Features/index.html">
 <meta property="og:site_name" content="Liu Xiaomao's blog">
 <meta property="og:description" content="Reading Note for Introducing Java 8
-Lambada Expressionsbehaviour parameterization patternFlexibility and conciseness(parameters) -&amp;gt; expression(parameters) -&amp;gt; {statements;}
-Method Referencesreuse">
-<meta property="og:updated_time" content="2016-03-05T09:09:11.511Z">
+Java 8 Features1. Lambada ExpressionsWhy Lambda?Pattern : behaviour parameterization, cope with requirement changes with flexibility and conciseness
+Definition and">
+<meta property="og:updated_time" content="2016-03-27T05:58:52.240Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java8 Features">
 <meta name="twitter:description" content="Reading Note for Introducing Java 8
-Lambada Expressionsbehaviour parameterization patternFlexibility and conciseness(parameters) -&amp;gt; expression(parameters) -&amp;gt; {statements;}
-Method Referencesreuse">
+Java 8 Features1. Lambada ExpressionsWhy Lambda?Pattern : behaviour parameterization, cope with requirement changes with flexibility and conciseness
+Definition and">
   
     <link rel="alternate" href="/atom.xml" title="Liu Xiaomao&#39;s blog" type="application/atom+xml">
   
@@ -96,16 +96,70 @@ Method Referencesreuse">
     <div class="article-entry" itemprop="articleBody">
       
         <p>Reading Note for Introducing Java 8</p>
-<h2 id="Lambada-Expressions"><a href="#Lambada-Expressions" class="headerlink" title="Lambada Expressions"></a>Lambada Expressions</h2><p>behaviour parameterization pattern<br>Flexibility and conciseness<br>(parameters) -&gt; expression<br>(parameters) -&gt; {statements;}</p>
-<h2 id="Method-References"><a href="#Method-References" class="headerlink" title="Method References"></a>Method References</h2><p>reuse existing method definitions and pass them around just like lambda expressions.<br>Function<invoice, integer=""> invoiceToId = Invoice::getId;</invoice,></p>
-<h2 id="Streams"><a href="#Streams" class="headerlink" title="Streams"></a>Streams</h2>
+<h1 id="Java-8-Features"><a href="#Java-8-Features" class="headerlink" title="Java 8 Features"></a>Java 8 Features</h1><h2 id="1-Lambada-Expressions"><a href="#1-Lambada-Expressions" class="headerlink" title="1. Lambada Expressions"></a>1. Lambada Expressions</h2><h3 id="Why-Lambda"><a href="#Why-Lambda" class="headerlink" title="Why Lambda?"></a>Why Lambda?</h3><p>Pattern : behaviour parameterization, cope with requirement changes with flexibility and conciseness</p>
+<h3 id="Definition-and-Syntax"><a href="#Definition-and-Syntax" class="headerlink" title="Definition and Syntax"></a>Definition and Syntax</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(parameters) -&gt; expression</span><br><span class="line"></span><br><span class="line">(parameters) -&gt; &#123;statements;&#125;</span><br></pre></td></tr></table></figure>
+<p>Example:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Invoice&gt; expensiveInvoicesFromOracle = findInvoices(invoices, inv -&gt;</span><br><span class="line">                                    inv.getAmount() &gt; <span class="number">10_000</span></span><br><span class="line">                                    &amp;&amp; inv.getCustomer() == Customer.ORACLE);</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-Method-References"><a href="#2-Method-References" class="headerlink" title="2. Method References"></a>2. Method References</h2><p>Directly refer the method using double colon syntax (::)</p>
+<h3 id="type-of-reference"><a href="#type-of-reference" class="headerlink" title="type of reference"></a>type of reference</h3><ol>
+<li><p>refer static method</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Function&lt;String, Integer&gt; converter = Integer::parseInt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>refer instance method</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Function&lt;Invoice, Integer&gt; invoiceToId = Invoice::getId;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>refer to an instance method of an existing object</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Consumer&lt;Object&gt; print = System.out::println;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>constructor refer</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Supplier&lt;List&lt;String&gt;&gt; listOfString = List::<span class="keyword">new</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="Example-to-combine"><a href="#Example-to-combine" class="headerlink" title="Example to combine"></a>Example to combine</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Collections.sort(invoices, <span class="keyword">new</span> Comparator&lt;Invoice&gt;() &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Invoice inv1, Invoice inv2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Double.compare(inv2.getAmount(), inv1.getAmount());</span><br><span class="line">&#125; &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>How to write in Java 8?</strong></p>
+<p>Lists interface supports sort method<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invoices.sort(Comparator::comparingdouble(Invoice::getAmount));</span><br></pre></td></tr></table></figure></p>
+<h2 id="3-Streams"><a href="#3-Streams" class="headerlink" title="3. Streams"></a>3. Streams</h2><h3 id="What’s-steam"><a href="#What’s-steam" class="headerlink" title="What’s steam?"></a>What’s steam?</h3><p><em>Sequence of elements</em></p>
+<p>A stream provides an interface to a sequenced set of values of a specific element type. However, streams <strong>don’t actually store elements</strong>; they’re computed on demand.</p>
+<h3 id="Operations"><a href="#Operations" class="headerlink" title="Operations"></a>Operations</h3><p><strong>Operations such as filter, sorted, and map, which can be connected together to form a pipeline</strong></p>
+<p><strong>Operations such as collect, findFirst, and allMatch, which terminate the pipeline and return a result</strong></p>
+<h4 id="Filtering"><a href="#Filtering" class="headerlink" title="Filtering"></a>Filtering</h4><ol>
+<li>filter : Takes a Predicate object as an argument and returns a stream including all elements that match the predicate</li>
+<li>distinct : Returns a stream with unique elements (according to the imple‐ mentation of equals for a stream element)</li>
+<li>limit : Returns a stream that is no longer than a certain size</li>
+<li>skip : Returns a stream with the first n number of elements discarded</li>
+</ol>
+<h4 id="Matching"><a href="#Matching" class="headerlink" title="Matching"></a>Matching</h4><ol>
+<li>anyMatch</li>
+<li>allMatch</li>
+<li>noneMatch</li>
+</ol>
+<h4 id="Finding"><a href="#Finding" class="headerlink" title="Finding"></a>Finding</h4><ol>
+<li>findFirst</li>
+<li>findAny</li>
+</ol>
+<h4 id="Mapping"><a href="#Mapping" class="headerlink" title="Mapping"></a>Mapping</h4><p><code>map()</code>  takes a Function object as an argument to turn the elements of a stream into another type.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; ids = invoices.stream()</span><br><span class="line">                  .map(Invoice::getId)</span><br><span class="line">                  .collect(Collectors.toList());</span><br></pre></td></tr></table></figure></p>
+<h4 id="Reducing"><a href="#Reducing" class="headerlink" title="Reducing"></a>Reducing</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> product = numbers.stream().reduce(<span class="number">1</span>, (a, b) -&gt; a * b);</span><br><span class="line"><span class="keyword">int</span> max = numbers.stream().reduce(Integer.MIN_VALUE, Integer::max);</span><br></pre></td></tr></table></figure>
+<h4 id="Collectors"><a href="#Collectors" class="headerlink" title="Collectors"></a>Collectors</h4><p>use Collector object to accumulate elements into final result</p>
+<h3 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; firstFiveIds = invoices.stream()</span><br><span class="line">                  .filter(inv -&gt; inv.getCustomer() == Customer.ORACLE)</span><br><span class="line">                  .filter(inv -&gt; inv.getTitle().contains(<span class="string">"Training"</span>))</span><br><span class="line">                  .sorted(comparingDouble(Invoice::getAmount))</span><br><span class="line">                  .map(Invoice::getId)</span><br><span class="line">                  .limit(<span class="number">5</span>)</span><br><span class="line">                  .collect(Collectors.toList());</span><br></pre></td></tr></table></figure>
+<h3 id="Parallel-Streams"><a href="#Parallel-Streams" class="headerlink" title="Parallel Streams"></a>Parallel Streams</h3><p>steam API support easy data parallelism. Streams API will use the Fork/Join framework, leverage the multiple cores of your machine.<br>steam API support easy data parallelism. Streams API will use the Fork/Join framework, leverage the multiple cores of your machine.</p>
+<h4 id="Two-way"><a href="#Two-way" class="headerlink" title="Two way"></a>Two way</h4><ol>
+<li>parallelStream()</li>
+<li>convert existing Stream into parallel STream by using parallel() method</li>
+</ol>
+<h4 id="Factors-to-consider-if-use-parallel"><a href="#Factors-to-consider-if-use-parallel" class="headerlink" title="Factors to consider if use parallel"></a>Factors to consider if use parallel</h4><ol>
+<li>Splittability : data structure like arrays are easily splittable, but likedlist or files offer poor splittability</li>
+<li>Cost per element : more expensive, more benefit from parallelism</li>
+<li>Boxing : perfer to use primitives instead of objects if possible</li>
+<li>Size : parallel setup cost may amortized over processing of element, parallel speedup will outweigh the setup cose</li>
+<li>Number of Cores</li>
+</ol>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://xjwun.github.io/2016/03/05/Java8-Features/" data-id="cillw38100000dk1x0ecom5gj" class="article-share-link">Share</a>
+      <a data-url="http://xjwun.github.io/2016/03/05/Java8-Features/" data-id="cima5p6ap00007k1x98kmu9u7" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java-readingNote/">Java, readingNote</a></li></ul>
 
     </footer>
   </div>
@@ -137,7 +191,7 @@ Method Referencesreuse">
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-readingNote/">Java, readingNote</a></li></ul>
     </div>
   </div>
 
@@ -147,7 +201,7 @@ Method Referencesreuse">
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Java/" style="font-size: 10px;">Java</a>
+      <a href="/tags/Java-readingNote/" style="font-size: 10px;">Java, readingNote</a>
     </div>
   </div>
 
